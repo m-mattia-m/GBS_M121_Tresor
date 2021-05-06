@@ -8,4 +8,4 @@ Das ist die Projektarbeit von:
 
 aus dem Modul 121.
 
-Der Code ist © Michael Schädler, Kay Wild, Mattia Müggler
+© Michael Schädler, Kay Wild, Mattia Müggler
