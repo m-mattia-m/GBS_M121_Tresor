@@ -22,9 +22,9 @@
 
 #include <LiquidCrystal.h>
 
-int code = 1234;
+int code[] = {1,2,3,4};
 int countFalseCode = 0;
-int tempCode;
+int tempCode[4];
  
 int btn1 = 8;
 int btn2 = 0;
@@ -54,17 +54,28 @@ void setup(){
     lcd.begin(16, 2);
 
     
-    pinMode(led, OUTPUT);
-    pinMode(piezo, OUTPUT);
+    // pinMode(led, OUTPUT);
+    // pinMode(piezo, OUTPUT);
 }
 
 void loop(){
   if(digitalRead(btn1)){
-    analogWrite()(ledG, 255)
+    tempCode[sizeof(tempCode)] = 1;
   }
   if(digitalRead(btn2)){
-    analogWrite()(ledR, 255)
+    tempCode[sizeof(tempCode)] = 2;
+  }
+  if(digitalRead(btn3)){
+    tempCode[sizeof(tempCode)] = 3;
+  }
+   if(digitalRead(btn4)){
+    tempCode[sizeof(tempCode)] = 4;
   }
 
-  
+ //   if(sizeof(tempCode) = 4){
+ //   for(int i = 0; i < sizeof(tempCode); i++) {
+ //     if()
+ //   }
+  }
+
 }
