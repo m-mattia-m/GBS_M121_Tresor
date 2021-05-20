@@ -34,7 +34,9 @@ int btnReset = 6;
 int btnDelete = 7;
 
 int piezo = 1;
-int led = 2;
+int ledRed = 2;
+int ledGreen = 3;
+int ledBlue = 4;
 
 int d1 = 2, d2 = 3, d3 = 4, d4 = 5, d5 = 11, d6 = 12;
 LiquidCrystal lcd(d1, d2, d3, d4, d5, d6);
@@ -61,6 +63,7 @@ void setup(){
 void loop(){
   if(digitalRead(btn1)){
     userCode[sizeof(userCode)] = 1;
+    Serial.print("test_works")
   }
   if(digitalRead(btn2)){
     userCode[sizeof(userCode)] = 2;
@@ -79,7 +82,7 @@ void loop(){
       }
     }
     if(wrongAttempts = 0){
-      digitalWrite(led, HIGH);
+      digitalWrite(ledRed, 255);
     }
   }
 
