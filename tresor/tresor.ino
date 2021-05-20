@@ -59,29 +59,27 @@ void setup(){
 }
 
 void loop(){
-  switch(digitalRead(btn)){
-    case btn1: 
-      userCode[sizeof(userCode)] = 1;
-      break;
-    case btn2: 
-      userCode[sizeof(userCode)] = 2;
-      break;
-   case btn3: 
-      userCode[sizeof(userCode)] = 3;
-      break;
-   case btn4: 
-      userCode[sizeof(userCode)] = 4;
-      break;
+  if(digitalRead(btn1)){
+    userCode[sizeof(userCode)] = 1;
+  }
+  if(digitalRead(btn2)){
+    userCode[sizeof(userCode)] = 2;
+  }
+  if(digitalRead(btn3)){
+    userCode[sizeof(userCode)] = 3;
+  }
+   if(digitalRead(btn4)){
+    userCode[sizeof(userCode)] = 4;
   }
 
-  if(sizeof(userCode) = 4){
-    for(int i = 0; i < 4); i++) {
+  if(sizeof(userCode) == 4){
+    for(int i = 0; i < 4; i++) {
       if(userCode[i] != code[i]){
         wrongAttempts ++;
       }
     }
     if(wrongAttempts = 0){
-      digitalWrite(ledG, 255)
+      digitalWrite(led, HIGH);
     }
   }
 
