@@ -23,15 +23,15 @@
 #include <LiquidCrystal.h>
 
 int code[] = {1,2,3,4};
-int countFalseCode = 0;
-int tempCode[4];
+int wrongAttempts = 0;
+int userCode[4];
  
 int btn1 = 8;
 int btn2 = 0;
 int btn3 = 10;
 int btn4 = 13;
-int btnR = 6;
-int btnD = 7;
+int btnReset = 6;
+int btnDelete = 7;
 
 int piezo = 1;
 int led = 2;
@@ -49,8 +49,8 @@ void setup(){
     pinMode(btn2, INPUT);
     pinMode(btn3, INPUT);
     pinMode(btn4, INPUT);
-    pinMode(btnR, INPUT);
-    pinMode(btnD, INPUT);
+    pinMode(btnReset, INPUT);
+    pinMode(btnDelete, INPUT);
     lcd.begin(16, 2);
 
     
@@ -59,23 +59,30 @@ void setup(){
 }
 
 void loop(){
-  if(digitalRead(btn1)){
-    tempCode[sizeof(tempCode)] = 1;
-  }
-  if(digitalRead(btn2)){
-    tempCode[sizeof(tempCode)] = 2;
-  }
-  if(digitalRead(btn3)){
-    tempCode[sizeof(tempCode)] = 3;
-  }
-   if(digitalRead(btn4)){
-    tempCode[sizeof(tempCode)] = 4;
+  switch(digitalRead(btn)){
+    case btn1: 
+      userCode[sizeof(userCode)] = 1;
+      break;
+    case btn2: 
+      userCode[sizeof(userCode)] = 2;
+      break;
+   case btn3: 
+      userCode[sizeof(userCode)] = 3;
+      break;
+   case btn4: 
+      userCode[sizeof(userCode)] = 4;
+      break;
   }
 
- //   if(sizeof(tempCode) = 4){
- //   for(int i = 0; i < sizeof(tempCode); i++) {
- //     if()
- //   }
+  if(sizeof(userCode) = 4){
+    for(int i = 0; i < 4); i++) {
+      if(userCode[i] != code[i]){
+        wrongAttempts ++;
+      }
+    }
+    if(wrongAttempts = 0){
+      digitalWrite(ledG, 255)
+    }
   }
 
 }
