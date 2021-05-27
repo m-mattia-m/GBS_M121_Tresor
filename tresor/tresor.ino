@@ -34,8 +34,8 @@ int btnReset = 6;
 int btnDelete = 7;
 
 int piezo = 1;
-int ledRed = 2;
-int ledGreen = 3;
+int ledRed = 3;
+int ledGreen = 2;
 int ledBlue = 4;
 
 int d1 = 2, d2 = 3, d3 = 4, d4 = 5, d5 = 11, d6 = 12;
@@ -61,17 +61,19 @@ void setup(){
 }
 
 void loop(){
-  if(digitalRead(btn1)){
+
+  if(digitalRead(btn1) == HIGH){
     userCode[sizeof(userCode)] = 1;
-    Serial.print("test_works")
+    Serial.print("test_works");
   }
-  if(digitalRead(btn2)){
+  if(digitalRead(btn2) == HIGH){
     userCode[sizeof(userCode)] = 2;
   }
-  if(digitalRead(btn3)){
+  if(digitalRead(btn3) == HIGH){
     userCode[sizeof(userCode)] = 3;
   }
-   if(digitalRead(btn4)){
+   if(digitalRead(btn4) == HIGH){
+    analogWrite(ledRed, 255);
     userCode[sizeof(userCode)] = 4;
   }
 
@@ -82,7 +84,7 @@ void loop(){
       }
     }
     if(wrongAttempts = 0){
-      digitalWrite(ledRed, 255);
+      analogWrite(ledRed, 255);
     }
   }
 
