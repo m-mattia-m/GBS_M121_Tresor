@@ -1,91 +1,207 @@
-/*
- * Settings: (Digital-Input)
- * Display : d2
- * Display : d3
- * Display : d4
- * Display : d5
- * Btn R   : d6
- * Btn D   : d7
- * Btn 1   : d8
- * Btn 2   : d9
- * Btn 3   : d10
- * Display : d11
- * Display : d12
- * Btn 4   : d13
- * 
- * Piezo   : a1
- * LED     : a2
- * 
- * 
- * 6 Input | 3 Output
-*/
-
+#include <Console.h>;
 #include <LiquidCrystal.h>
 
-int code[] = {1,2,3,4};
-int wrongAttempts = 0;
-int userCode[4];
+// Arduino-Pin verbunden mit SH_CP des 74HC595
+int shiftPin = 11;
+// Arduino-Pin verbunden mit ST_CP des 74HC595
+int storePin = 12;
+// Arduino-Pin verbunden mit DS des 74HC595
+int dataPin = 13;
+
  
-int btn1 = 8;
-int btn2 = 0;
-int btn3 = 10;
-int btn4 = 13;
-int btnReset = 6;
-int btnDelete = 7;
+// Dieses Muster soll ausgegeben werden
+int muster[8] = {1,0,0,0,0,0,0,0}; 
+// {1,0,0,0,0,0,0,0} == rot
+// {0,0,0,0,0,0,1,0} == grün
 
-int piezo = 1;
-int ledRed = 3;
-int ledGreen = 2;
-int ledBlue = 4;
+int eingabeCode[4];
 
-int d1 = 2, d2 = 3, d3 = 4, d4 = 5, d5 = 11, d6 = 12;
-LiquidCrystal lcd(d1, d2, d3, d4, d5, d6);
+int adminCode[4] = {1,2,3,4};
 
-int val1 = 1;
-int val2 = 2;
-int val3 = 3;
-int val4 = 4;
+int taster2;
+int taster3;
+int taster4;
+int taster5;
+int tasterReset;
 
-void setup(){
-    pinMode(btn1, INPUT);
-    pinMode(btn2, INPUT);
-    pinMode(btn3, INPUT);
-    pinMode(btn4, INPUT);
-    pinMode(btnReset, INPUT);
-    pinMode(btnDelete, INPUT);
-    lcd.begin(16, 2);
+int index = 0;
 
-    
-    // pinMode(led, OUTPUT);
-    // pinMode(piezo, OUTPUT);
+const int rs = 1, en = 6, d4 = 7, d5 = 8, d6 = 9, d7 = 10;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+void setup() {
+
+ //Serial.begin(9600);
+  
+ pinMode(storePin, OUTPUT);
+ pinMode(shiftPin, OUTPUT);
+ pinMode(dataPin, OUTPUT);
+
+ pinMode(2, INPUT);
+ pinMode(3, INPUT);
+ pinMode(4, INPUT);
+ pinMode(5, INPUT);
+
+ pinMode(muster[4], INPUT);
+ // pinMode(A5, OUTPUT);
+
+ // set up the LCD's number of columns and rows:
+ lcd.begin(16, 2);
+ // Print a message to the LCD.
+ lcd.print("Pin eingeben:");
+
 }
+ 
+void loop () {
 
-void loop(){
+  // set the cursor to column 0, line 1
+  // (note: line 1 is the second row, since counting begins with 0):
+  lcd.setCursor(1, 0);
+  // print the number of seconds since reset:
+  
+  
 
-  if(digitalRead(btn1) == HIGH){
-    userCode[sizeof(userCode)] = 1;
-    Serial.print("test_works");
-  }
-  if(digitalRead(btn2) == HIGH){
-    userCode[sizeof(userCode)] = 2;
-  }
-  if(digitalRead(btn3) == HIGH){
-    userCode[sizeof(userCode)] = 3;
-  }
-   if(digitalRead(btn4) == HIGH){
-    analogWrite(ledRed, 255);
-    userCode[sizeof(userCode)] = 4;
+
+  
+  taster2 = digitalRead(2);
+  taster3 = digitalRead(3);
+  taster4 = digitalRead(4);
+  taster5 = digitalRead(5);
+  tasterReset = digitalRead(muster[4]);
+  //tasterReset = muster[4];
+
+  if (taster2 == LOW){
+    delay(800);
+    //muster[0] = 1; 
+    eingabeCode[index] = 1;
+    //Serial.println("index-1");
+    //Serial.println(index);
+    index++;
+    tone(A5, 1000);
+    delay(100);
+    noTone(A5);
+    //Serial.println("Aktuelle Taste: 1");
+    lcd.setCursor(0, 1);
+    lcd.print("1");
+  } else {
+    //muster[0] = 0;
   }
 
-  if(sizeof(userCode) == 4){
-    for(int i = 0; i < 4; i++) {
-      if(userCode[i] != code[i]){
-        wrongAttempts ++;
+  if (taster3 == LOW){
+    delay(800);
+    //muster[6] = 1; 
+    eingabeCode[index] = 2;
+    //Serial.println("index-2");
+    //Serial.println(index);
+    index++;
+    tone(A5, 1000);
+    delay(100);
+    noTone(A5);
+    //Serial.println("Aktuelle Taste: 2");
+    lcd.setCursor(1, 1);
+    lcd.print("2");
+  } else {
+    //muster[6] = 0;
+  }
+
+  if (taster4 == LOW){
+    delay(800);
+    //muster[6] = 1; 
+    eingabeCode[index] = 3;
+    //Serial.println("index-3");
+    //Serial.println(index);
+    index++;
+    tone(A5, 1000);
+    delay(100);
+    noTone(A5);
+    //Serial.println("Aktuelle Taste: 3");
+    lcd.setCursor(2, 1);
+    lcd.print("3");
+  } else {
+    //muster[6] = 0;
+  }
+
+  if (taster5 == LOW){
+    delay(800);
+    //muster[6] = 1; 
+    eingabeCode[index] = 4;
+    //Serial.println("index-4");
+    //Serial.println(index);
+    index++;
+    tone(A5, 1000);
+    delay(100);
+    noTone(A5);
+    //Serial.println("Aktuelle Taste: 4");
+    lcd.setCursor(3, 1);
+    lcd.print("4");
+  } else {
+    //muster[6] = 0;
+  }
+
+  if (tasterReset == LOW){
+    delay(800);
+    for (int i = 0; i<4; i++){
+      eingabeCode[i] = 0;
+    }
+    tone(A5, 1000);
+    delay(1000);
+    noTone(A5);
+    //Serial.println("Aktuelle Taste: 4");
+    lcd.setCursor(4, 1);
+    lcd.print("reset");
+  } else {
+    //muster[6] = 0;
+  }
+
+    //Serial.println("ArrayCode:");
+    //Serial.println(eingabeCode[0]);
+    //Serial.println(eingabeCode[1]);
+    //Serial.println(eingabeCode[2]);
+    //Serial.println(eingabeCode[3]);
+
+  if(index == 4){
+    for(int i = 0; i < 4; i++){
+      if(eingabeCode[i] == adminCode[i]){
+        //Serial.print("EingabeCode-");
+        //Serial.print(i);
+        //Serial.print(" ->: ");
+        //Serial.print(eingabeCode[i]);
+        //Serial.print("\t adminCode-");
+        //Serial.print(i);
+        //Serial.print(" ->: ");
+        //Serial.print(adminCode[i]);
+        //Serial.print("\n");
+        muster[6] = 1; 
+        // tone(A5, 1000);
+        // delay(2000);
+        // noTone(A5);
       }
     }
-    if(wrongAttempts = 0){
-      analogWrite(ledRed, 255);
-    }
   }
+
+
+// ##############################
+
+
+
+// storePin sicherheitshalber auf LOW
+ digitalWrite(storePin, LOW); 
+ 
+ for (int i=0; i<8; i++) {
+ // Zuerst immer alle 3 Pins auf LOW
+ // Aktion passiert bei Wechsel von LOW auf HIGH
+ digitalWrite(shiftPin, LOW);
+ // Jetzt den Wert der aktuellen Stelle ans Datenpin DS anlegen 
+ digitalWrite(dataPin, muster[i]);
+ // Dann ShiftPin SHCP von LOW auf HIGH, damit wird der Wert
+ // am Datenpin ins Register geschoben. 
+ digitalWrite(shiftPin, HIGH);
+ }
+ 
+ // Wenn alle 8 Stellen im Register sind, jetzt das StorePin STCP
+ // von LOW auf HIGH, damit wird Registerinhalt an Ausgabepins
+ // kopiert und der Zustand an den LEDs sichtbar
+ 
+ digitalWrite(storePin, HIGH);
 
 }

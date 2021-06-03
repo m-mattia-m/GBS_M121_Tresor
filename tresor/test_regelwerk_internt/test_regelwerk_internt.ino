@@ -1,4 +1,5 @@
 #include <Console.h>;
+#include <LiquidCrystal.h>
 
 // Arduino-Pin verbunden mit SH_CP des 74HC595
 int shiftPin = 11;
@@ -6,9 +7,10 @@ int shiftPin = 11;
 int storePin = 12;
 // Arduino-Pin verbunden mit DS des 74HC595
 int dataPin = 13;
+
  
 // Dieses Muster soll ausgegeben werden
-int muster[8] = {0,0,0,0,0,0,0,0}; 
+int muster[8] = {1,0,0,0,0,0,0,0}; 
 // {1,0,0,0,0,0,0,0} == rot
 // {0,0,0,0,0,0,1,0} == grün
 
@@ -16,15 +18,20 @@ int eingabeCode[4];
 
 int adminCode[4] = {1,2,3,4};
 
-
 int taster2;
 int taster3;
 int taster4;
 int taster5;
+int tasterReset;
+
+int index = 0;
+
+const int rs = 1, en = 6, d4 = 7, d5 = 8, d6 = 9, d7 = 10;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void setup() {
 
- Serial.begin(9600);
+ //Serial.begin(9600);
   
  pinMode(storePin, OUTPUT);
  pinMode(shiftPin, OUTPUT);
@@ -34,73 +41,144 @@ void setup() {
  pinMode(3, INPUT);
  pinMode(4, INPUT);
  pinMode(5, INPUT);
+
+ pinMode(muster[4], INPUT);
  // pinMode(A5, OUTPUT);
- 
+
+ // set up the LCD's number of columns and rows:
+ lcd.begin(16, 2);
+ // Print a message to the LCD.
+ lcd.print("Pin eingeben:");
+
 }
  
 void loop () {
+
+  // set the cursor to column 0, line 1
+  // (note: line 1 is the second row, since counting begins with 0):
+  lcd.setCursor(1, 0);
+  // print the number of seconds since reset:
+  
+  
+
+
   
   taster2 = digitalRead(2);
   taster3 = digitalRead(3);
   taster4 = digitalRead(4);
   taster5 = digitalRead(5);
+  tasterReset = digitalRead(muster[4]);
+  //tasterReset = muster[4];
 
   if (taster2 == LOW){
+    delay(800);
     //muster[0] = 1; 
-    eingabeCode[sizeof(eingabeCode)] = 1;
+    eingabeCode[index] = 1;
+    //Serial.println("index-1");
+    //Serial.println(index);
+    index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    Serial.println("Aktuelle Taste: 1");
+    //Serial.println("Aktuelle Taste: 1");
+    lcd.setCursor(0, 1);
+    lcd.print("1");
   } else {
     //muster[0] = 0;
   }
 
   if (taster3 == LOW){
+    delay(800);
     //muster[6] = 1; 
-    eingabeCode[sizeof(eingabeCode)] = 2;
+    eingabeCode[index] = 2;
+    //Serial.println("index-2");
+    //Serial.println(index);
+    index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    Serial.println("Aktuelle Taste: 2");
+    //Serial.println("Aktuelle Taste: 2");
+    lcd.setCursor(1, 1);
+    lcd.print("2");
   } else {
     //muster[6] = 0;
   }
 
   if (taster4 == LOW){
+    delay(800);
     //muster[6] = 1; 
-    eingabeCode[sizeof(eingabeCode)] = 3;
+    eingabeCode[index] = 3;
+    //Serial.println("index-3");
+    //Serial.println(index);
+    index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    Serial.println("Aktuelle Taste: 3");
+    //Serial.println("Aktuelle Taste: 3");
+    lcd.setCursor(2, 1);
+    lcd.print("3");
   } else {
     //muster[6] = 0;
   }
 
   if (taster5 == LOW){
+    delay(800);
     //muster[6] = 1; 
-    eingabeCode[sizeof(eingabeCode)] = 4;
+    eingabeCode[index] = 4;
+    //Serial.println("index-4");
+    //Serial.println(index);
+    index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    Serial.println("Aktuelle Taste: 4");
+    //Serial.println("Aktuelle Taste: 4");
+    lcd.setCursor(3, 1);
+    lcd.print("4");
   } else {
     //muster[6] = 0;
   }
 
-  for(int i = 0; i < 4; i++){
-    Serial.println("Eingabe i=");
-    Serial.println(i);
-    Serial.println(eingabeCode[i]);
-    if(eingabeCode[i] == adminCode[i]){
-      Serial.println(i + ": " + eingabeCode[i]);
-      muster[6] = 1; 
-      tone(A5, 1000);
-      delay(2000);
-      noTone(A5);
+  if (tasterReset == LOW){
+    delay(800);
+    for (int i = 0; i<4; i++){
+      eingabeCode[i] = 0;
+    }
+    tone(A5, 1000);
+    delay(1000);
+    noTone(A5);
+    //Serial.println("Aktuelle Taste: 4");
+    lcd.setCursor(4, 1);
+    lcd.print("reset");
+  } else {
+    //muster[6] = 0;
+  }
+
+    //Serial.println("ArrayCode:");
+    //Serial.println(eingabeCode[0]);
+    //Serial.println(eingabeCode[1]);
+    //Serial.println(eingabeCode[2]);
+    //Serial.println(eingabeCode[3]);
+
+  if(index == 4){
+    for(int i = 0; i < 4; i++){
+      if(eingabeCode[i] == adminCode[i]){
+        //Serial.print("EingabeCode-");
+        //Serial.print(i);
+        //Serial.print(" ->: ");
+        //Serial.print(eingabeCode[i]);
+        //Serial.print("\t adminCode-");
+        //Serial.print(i);
+        //Serial.print(" ->: ");
+        //Serial.print(adminCode[i]);
+        //Serial.print("\n");
+        muster[6] = 1; 
+        // tone(A5, 1000);
+        // delay(2000);
+        // noTone(A5);
+      }
     }
   }
+
 
 // ##############################
 
