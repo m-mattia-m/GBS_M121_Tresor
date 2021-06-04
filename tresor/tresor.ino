@@ -42,7 +42,7 @@ void setup() {
  pinMode(4, INPUT);
  pinMode(5, INPUT);
 
- pinMode(muster[4], INPUT);
+ pinMode(A0, INPUT);
  // pinMode(A5, OUTPUT);
 
  // set up the LCD's number of columns and rows:
@@ -67,21 +67,17 @@ void loop () {
   taster3 = digitalRead(3);
   taster4 = digitalRead(4);
   taster5 = digitalRead(5);
-  tasterReset = digitalRead(muster[4]);
+  tasterReset = analogRead(A0);
   //tasterReset = muster[4];
 
   if (taster2 == LOW){
     delay(800);
-    //muster[0] = 1; 
     eingabeCode[index] = 1;
-    //Serial.println("index-1");
-    //Serial.println(index);
     index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    //Serial.println("Aktuelle Taste: 1");
-    lcd.setCursor(0, 1);
+    lcd.setCursor(index, 1);
     lcd.print("1");
   } else {
     //muster[0] = 0;
@@ -89,16 +85,12 @@ void loop () {
 
   if (taster3 == LOW){
     delay(800);
-    //muster[6] = 1; 
     eingabeCode[index] = 2;
-    //Serial.println("index-2");
-    //Serial.println(index);
     index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    //Serial.println("Aktuelle Taste: 2");
-    lcd.setCursor(1, 1);
+    lcd.setCursor(index, 1);
     lcd.print("2");
   } else {
     //muster[6] = 0;
@@ -106,16 +98,12 @@ void loop () {
 
   if (taster4 == LOW){
     delay(800);
-    //muster[6] = 1; 
     eingabeCode[index] = 3;
-    //Serial.println("index-3");
-    //Serial.println(index);
     index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    //Serial.println("Aktuelle Taste: 3");
-    lcd.setCursor(2, 1);
+    lcd.setCursor(index, 1);
     lcd.print("3");
   } else {
     //muster[6] = 0;
@@ -123,16 +111,12 @@ void loop () {
 
   if (taster5 == LOW){
     delay(800);
-    //muster[6] = 1; 
     eingabeCode[index] = 4;
-    //Serial.println("index-4");
-    //Serial.println(index);
     index++;
     tone(A5, 1000);
     delay(100);
     noTone(A5);
-    //Serial.println("Aktuelle Taste: 4");
-    lcd.setCursor(3, 1);
+    lcd.setCursor(index, 1);
     lcd.print("4");
   } else {
     //muster[6] = 0;
@@ -141,23 +125,18 @@ void loop () {
   if (tasterReset == LOW){
     delay(800);
     for (int i = 0; i<4; i++){
+      lcd.setCursor(i, 1);
+      lcd.print(" ");
       eingabeCode[i] = 0;
     }
     tone(A5, 1000);
     delay(1000);
     noTone(A5);
-    //Serial.println("Aktuelle Taste: 4");
     lcd.setCursor(4, 1);
     lcd.print("reset");
   } else {
     //muster[6] = 0;
   }
-
-    //Serial.println("ArrayCode:");
-    //Serial.println(eingabeCode[0]);
-    //Serial.println(eingabeCode[1]);
-    //Serial.println(eingabeCode[2]);
-    //Serial.println(eingabeCode[3]);
 
   if(index == 4){
     for(int i = 0; i < 4; i++){
