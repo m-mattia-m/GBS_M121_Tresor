@@ -137,7 +137,6 @@ void loop () {
   }
 
   if(index == 4){
-    for(int i = 0; i < 4; i++){
       if(
         eingabeCode[0] == adminCode[0] && 
         eingabeCode[1] == adminCode[1] && 
@@ -146,7 +145,7 @@ void loop () {
       ){
         digitalWrite(12, HIGH);
         lcd.clear();
-        lcd.print("Entsperren");
+        lcd.print("Entsperrt");
         delay(200);
         // tone(A5, 1000);
         // delay(2000);
@@ -154,8 +153,10 @@ void loop () {
       }
       else {
         digitalWrite(11, HIGH);
+        lcd.clear();
+        lcd.print("Falscher Pin");
+        delay(200);
       }
-    }
   }
 
 
