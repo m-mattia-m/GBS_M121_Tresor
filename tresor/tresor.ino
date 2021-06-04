@@ -122,13 +122,14 @@ void loop () {
     //muster[6] = 0;
   }
 
-  if (tasterReset == LOW){
+  if (tasterReset <= 5){
     delay(800);
     for (int i = 0; i<4; i++){
       lcd.setCursor(i, 1);
       lcd.print(" ");
       eingabeCode[i] = 0;
     }
+    index = 0;
     tone(A5, 1000);
     delay(1000);
     noTone(A5);
