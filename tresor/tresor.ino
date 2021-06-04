@@ -8,15 +8,12 @@ int storePin = 12;
 // Arduino-Pin verbunden mit DS des 74HC595
 int dataPin = 13;
 
- 
-// Dieses Muster soll ausgegeben werden
-int muster[8] = {1,0,0,0,0,0,0,0}; 
-// {1,0,0,0,0,0,0,0} == rot
-// {0,0,0,0,0,0,1,0} == grün
-
 int eingabeCode[4];
 
 int adminCode[4] = {1,2,3,4};
+
+int ledGreen;
+int ledRed;
 
 int taster2;
 int taster3;
@@ -41,6 +38,8 @@ void setup() {
  pinMode(3, INPUT);
  pinMode(4, INPUT);
  pinMode(5, INPUT);
+
+ pinMode(12, OUTPUT);
 
  pinMode(A0, INPUT);
  // pinMode(A5, OUTPUT);
@@ -67,8 +66,10 @@ void loop () {
   taster3 = digitalRead(3);
   taster4 = digitalRead(4);
   taster5 = digitalRead(5);
-  tasterReset = analogRead(A0);
-  //tasterReset = muster[4];
+  tasterReset = digitalRead(0);
+
+  digitalWrite(11 ,LOW);
+  digitalWrite(12 ,LOW);
 
   if (taster2 == LOW){
     delay(800);
@@ -80,7 +81,6 @@ void loop () {
     lcd.setCursor(index, 1);
     lcd.print("1");
   } else {
-    //muster[0] = 0;
   }
 
   if (taster3 == LOW){
@@ -93,7 +93,6 @@ void loop () {
     lcd.setCursor(index, 1);
     lcd.print("2");
   } else {
-    //muster[6] = 0;
   }
 
   if (taster4 == LOW){
@@ -106,7 +105,6 @@ void loop () {
     lcd.setCursor(index, 1);
     lcd.print("3");
   } else {
-    //muster[6] = 0;
   }
 
   if (taster5 == LOW){
@@ -119,69 +117,43 @@ void loop () {
     lcd.setCursor(index, 1);
     lcd.print("4");
   } else {
-    //muster[6] = 0;
   }
 
-  if (tasterReset <= 5){
+  if (tasterReset == LOW){
     delay(800);
     for (int i = 0; i<4; i++){
-      lcd.setCursor(i, 1);
-      lcd.print(" ");
+      // lcd.setCursor(i, 1);
+      // lcd.print(" ");
       eingabeCode[i] = 0;
     }
+    lcd.clear();
+    lcd.print("Pin eingeben:");
     index = 0;
     tone(A5, 1000);
     delay(1000);
     noTone(A5);
-    lcd.setCursor(4, 1);
-    lcd.print("reset");
   } else {
-    //muster[6] = 0;
   }
 
   if(index == 4){
     for(int i = 0; i < 4; i++){
-      if(eingabeCode[i] == adminCode[i]){
-        //Serial.print("EingabeCode-");
-        //Serial.print(i);
-        //Serial.print(" ->: ");
-        //Serial.print(eingabeCode[i]);
-        //Serial.print("\t adminCode-");
-        //Serial.print(i);
-        //Serial.print(" ->: ");
-        //Serial.print(adminCode[i]);
-        //Serial.print("\n");
-        muster[6] = 1; 
+      if(
+        eingabeCode[0] == adminCode[0] && 
+        eingabeCode[1] == adminCode[1] && 
+        eingabeCode[2] == adminCode[2] &&
+        eingabeCode[3] == adminCode[3]
+      ){
+        digitalWrite(12, HIGH);
         // tone(A5, 1000);
         // delay(2000);
         // noTone(A5);
+      }
+      else {
+        
       }
     }
   }
 
 
-// ##############################
-
-
-
-// storePin sicherheitshalber auf LOW
- digitalWrite(storePin, LOW); 
- 
- for (int i=0; i<8; i++) {
- // Zuerst immer alle 3 Pins auf LOW
- // Aktion passiert bei Wechsel von LOW auf HIGH
- digitalWrite(shiftPin, LOW);
- // Jetzt den Wert der aktuellen Stelle ans Datenpin DS anlegen 
- digitalWrite(dataPin, muster[i]);
- // Dann ShiftPin SHCP von LOW auf HIGH, damit wird der Wert
- // am Datenpin ins Register geschoben. 
- digitalWrite(shiftPin, HIGH);
- }
- 
- // Wenn alle 8 Stellen im Register sind, jetzt das StorePin STCP
- // von LOW auf HIGH, damit wird Registerinhalt an Ausgabepins
- // kopiert und der Zustand an den LEDs sichtbar
- 
- digitalWrite(storePin, HIGH);
 
 }
