@@ -38,7 +38,8 @@ void setup() {
  pinMode(3, INPUT);
  pinMode(4, INPUT);
  pinMode(5, INPUT);
-
+ 
+ pinMode(11, OUTPUT);
  pinMode(12, OUTPUT);
 
  pinMode(A0, INPUT);
@@ -144,12 +145,15 @@ void loop () {
         eingabeCode[3] == adminCode[3]
       ){
         digitalWrite(12, HIGH);
+        lcd.clear();
+        lcd.print("Entsperren");
+        delay(200);
         // tone(A5, 1000);
         // delay(2000);
         // noTone(A5);
       }
       else {
-        
+        digitalWrite(11, HIGH);
       }
     }
   }
