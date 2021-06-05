@@ -11,7 +11,7 @@
 #include <LiquidCrystal.h>
 
 int eingabeCode[4];
-int setCode[4];
+int setzeCode[4];
 int adminCode[4] = {
   1,
   2,
@@ -19,19 +19,19 @@ int adminCode[4] = {
   4
 };
 
-int ledRed; // Pin 11
-int ledGreen; // Pin 12
+int ledRot; // Pin 11
+int ledGruen; // Pin 12
 
 int taster2;
 int taster3;
 int taster4;
 int taster5;
-int tasterReset;
+int tasterZuruecksetzen;
 int tasterSet;
-int countPinErrors = 0;
+int anzPinFehler = 0;
 
 int index = 0;
-int setPin = 0;
+int setzePin = 0;
 int tuereStatus = 0;
 
 const int rs = 1,
@@ -40,6 +40,7 @@ const int rs = 1,
   d5 = 8,
   d6 = 9,
   d7 = 10;
+// Hier werden die Ports für das lcd-Display gesetzt
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void setup() {
@@ -69,7 +70,7 @@ void loop() {
   taster3 = digitalRead(3);
   taster4 = digitalRead(4);
   taster5 = digitalRead(5);
-  tasterReset = digitalRead(0);
+  tasterZuruecksetzen = digitalRead(0);
   tasterSet = digitalRead(13);
 
   // Rotes LED leuchtet standardmässig und grünes LED ist ausgeschaltet
@@ -86,7 +87,7 @@ void loop() {
   }
   
   // Prüft die Anzahl der Falscheingaben
-  if (countPinErrors >= 3){
+  if (anzPinFehler >= 3){
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("zum oeffnen ");
@@ -104,10 +105,10 @@ void loop() {
   // setzt die Zahl 1 zum Pin
   if (taster2 == LOW) {
     delay(800);
-    if (setPin == 0) {
+    if (setzePin == 0) {
       eingabeCode[index] = 1;
     } else {
-      setCode[index] = 1;
+      setzeCode[index] = 1;
     }
     index++;
     tone(A5, 1000);
@@ -115,15 +116,15 @@ void loop() {
     noTone(A5);
     lcd.setCursor(index, 1);
     lcd.print("1");
-  } else {}
+  }
 
   // setzt die Zahl 2 zum Pin
   if (taster3 == LOW) {
     delay(800);
-    if (setPin == 0) {
+    if (setzePin == 0) {
       eingabeCode[index] = 2;
     } else {
-      setCode[index] = 2;
+      setzeCode[index] = 2;
     }
     index++;
     tone(A5, 1000);
@@ -131,15 +132,15 @@ void loop() {
     noTone(A5);
     lcd.setCursor(index, 1);
     lcd.print("2");
-  } else {}
+  }
 
   // setzt die Zahl 3 zum Pin
   if (taster4 == LOW) {
     delay(800);
-    if (setPin == 0) {
+    if (setzePin == 0) {
       eingabeCode[index] = 3;
     } else {
-      setCode[index] = 3;
+      setzeCode[index] = 3;
     }
     index++;
     tone(A5, 1000);
@@ -147,15 +148,15 @@ void loop() {
     noTone(A5);
     lcd.setCursor(index, 1);
     lcd.print("3");
-  } else {}
+  }
 
   // setzt die Zahl 4 zum Pin
   if (taster5 == LOW) {
     delay(800);
-    if (setPin == 0) {
+    if (setzePin == 0) {
       eingabeCode[index] = 4;
     } else {
-      setCode[index] = 4;
+      setzeCode[index] = 4;
     }
     index++;
     tone(A5, 1000);
@@ -163,10 +164,10 @@ void loop() {
     noTone(A5);
     lcd.setCursor(index, 1);
     lcd.print("4");
-  } else {}
+  }
 
   // löscht die Eingabe
-  if (tasterReset == LOW) {
+  if (tasterZuruecksetzen == LOW) {
     delay(800);
     if (index > 0){ 
       index -= 1;
@@ -183,7 +184,7 @@ void loop() {
     tone(A5, 1000);
     delay(1000);
     noTone(A5);
-  } else {}
+  }
 
   // Setzt den Modus, um einen Pin zu erstellen
   if (tasterSet == LOW) {
@@ -193,7 +194,7 @@ void loop() {
       noTone(A5);
       lcd.clear();
       lcd.print("Setze Pin:");
-      setPin = 1;
+      setzePin = 1;
     } else {
       lcd.clear();
       lcd.print("zuerst oeffnen");
@@ -206,13 +207,13 @@ void loop() {
 
   // Überprüft nach 4 Zeichen, ob es der richtige Code war
   if (index == 4) {
-    if (setPin == 0) {
+    if (setzePin == 0) {
       if (
         (
-          eingabeCode[0] == setCode[0] &&
-          eingabeCode[1] == setCode[1] &&
-          eingabeCode[2] == setCode[2] &&
-          eingabeCode[3] == setCode[3]
+          eingabeCode[0] == setzeCode[0] &&
+          eingabeCode[1] == setzeCode[1] &&
+          eingabeCode[2] == setzeCode[2] &&
+          eingabeCode[3] == setzeCode[3]
         ) ||
         (
           eingabeCode[0] == adminCode[0] &&
@@ -223,7 +224,7 @@ void loop() {
       ) {
         index = 0;
         tuereStatus = 1;
-        countPinErrors = 0;
+        anzPinFehler = 0;
         digitalWrite(11, LOW);
         digitalWrite(12, HIGH);
         lcd.clear();
@@ -232,7 +233,7 @@ void loop() {
       } else {
         index = 0;
         tuereStatus = 0;
-        countPinErrors += 1;
+        anzPinFehler += 1;
         digitalWrite(11, LOW);
         delay(200);
         digitalWrite(11, HIGH);
@@ -244,15 +245,15 @@ void loop() {
         lcd.print("Pin eingaben:");
         delay(200);
       }
-    } else if (setPin == 1) {
-      setPin = 0;
+    } else if (setzePin == 1) {
+      setzePin = 0;
       index = 0;
       digitalWrite(12, HIGH);
       lcd.clear();
       lcd.print("neuer Pin gesetzt");
       for (int i = 0; i < 4; i++) {
         lcd.setCursor(i, 1);
-        lcd.print(setCode[i]);
+        lcd.print(setzeCode[i]);
       }
       delay(2000);
       lcd.clear();
