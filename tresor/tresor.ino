@@ -219,6 +219,9 @@ void loop() {
         digitalWrite(11, HIGH);
         lcd.clear();
         lcd.print("Falscher Pin");
+        delay(2000);
+        lcd.clear();
+        lcd.print("Pin eingaben:");
         delay(200);
       }
     } else if (setPin == 1) {
