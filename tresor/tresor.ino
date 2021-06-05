@@ -68,9 +68,18 @@ void loop() {
   tasterReset = digitalRead(0);
   tasterSet = digitalRead(13);
 
-  digitalWrite(11, LOW);
+  // Rotes LED leuchted standardmässig und Grünes LED ist ausgeschalten
+  digitalWrite(11, HIGH);
   digitalWrite(12, LOW);
 
+  // Prüft ob türe geschlossen oder geöffnet ist um das LED entsprechend leuchten zu lassen
+  if(tuereStatus == 0) {
+    digitalWrite(11, HIGH);
+    digitalWrite(12, LOW);
+  }else {
+    digitalWrite(11, LOW);
+    digitalWrite(12, HIGH); 
+  }
   
   // Prüft die anzahl der Falscheingaben
   if (countPinErrors >= 3){
@@ -211,6 +220,7 @@ void loop() {
         index = 0;
         tuereStatus = 1;
         countPinErrors = 0;
+        digitalWrite(11, LOW);
         digitalWrite(12, HIGH);
         lcd.clear();
         lcd.print("Entsperrt");
@@ -219,7 +229,10 @@ void loop() {
         index = 0;
         tuereStatus = 0;
         countPinErrors += 1;
+        digitalWrite(11, LOW);
+        delay(200);
         digitalWrite(11, HIGH);
+        delay(200);
         lcd.clear();
         lcd.print("Falscher Pin");
         delay(2000);
