@@ -155,14 +155,17 @@ void loop() {
   // löscht die Eingabe
   if (tasterReset == LOW) {
     delay(800);
-    for (int i = 0; i < 4; i++) {
-      // lcd.setCursor(i, 1);
-      // lcd.print(" ");
-      eingabeCode[i] = 0;
+    if (index > 0){ 
+      index -= 1;
     }
     lcd.clear();
+    lcd.setCursor(0,0);
     lcd.print("Pin eingeben:");
-    index = 0;
+    for (int i = 0; i < index; i++){
+      int zeileCursor = i + 1;
+      lcd.setCursor(zeileCursor,1);
+      lcd.print(eingabeCode[i]);
+    }
     tuereStatus = 0;
     tone(A5, 1000);
     delay(1000);
