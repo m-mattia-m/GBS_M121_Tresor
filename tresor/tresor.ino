@@ -56,9 +56,7 @@ void setup() {
 
   pinMode(A0, INPUT);
 
-  // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
-  // Print a message to the LCD.
   lcd.print("Pin eingeben:");
 
 }
@@ -74,11 +72,11 @@ void loop() {
   tasterReset = digitalRead(0);
   tasterSet = digitalRead(13);
 
-  // Rotes LED leuchted standardmässig und Grünes LED ist ausgeschalten
+  // Rotes LED leuchtet standardmässig und grünes LED ist ausgeschaltet
   digitalWrite(11, HIGH);
   digitalWrite(12, LOW);
 
-  // Prüft ob türe geschlossen oder geöffnet ist um das LED entsprechend leuchten zu lassen
+  // Prüft ob Türe geschlossen oder geöffnet ist, um das LED entsprechend leuchten zu lassen
   if(tuereStatus == 0) {
     digitalWrite(11, HIGH);
     digitalWrite(12, LOW);
@@ -87,7 +85,7 @@ void loop() {
     digitalWrite(12, HIGH); 
   }
   
-  // Prüft die anzahl der Falscheingaben
+  // Prüft die Anzahl der Falscheingaben
   if (countPinErrors >= 3){
     lcd.clear();
     lcd.setCursor(0,0);
@@ -103,7 +101,7 @@ void loop() {
     delay(2000);
   }
 
-  // setzt die zahl 1 zum Pin
+  // setzt die Zahl 1 zum Pin
   if (taster2 == LOW) {
     delay(800);
     if (setPin == 0) {
@@ -119,7 +117,7 @@ void loop() {
     lcd.print("1");
   } else {}
 
-  // setzt die zahl 2 zum Pin
+  // setzt die Zahl 2 zum Pin
   if (taster3 == LOW) {
     delay(800);
     if (setPin == 0) {
@@ -135,7 +133,7 @@ void loop() {
     lcd.print("2");
   } else {}
 
-  // setzt die zahl 3 zum Pin
+  // setzt die Zahl 3 zum Pin
   if (taster4 == LOW) {
     delay(800);
     if (setPin == 0) {
@@ -151,7 +149,7 @@ void loop() {
     lcd.print("3");
   } else {}
 
-  // setzt die zahl 4 zum Pin
+  // setzt die Zahl 4 zum Pin
   if (taster5 == LOW) {
     delay(800);
     if (setPin == 0) {
@@ -187,7 +185,7 @@ void loop() {
     noTone(A5);
   } else {}
 
-  // setzt den Modus um einen Pin zu erstellen
+  // Setzt den Modus, um einen Pin zu erstellen
   if (tasterSet == LOW) {
     if (tuereStatus == 1) {
       tone(A5, 1000);
@@ -206,7 +204,7 @@ void loop() {
     }
   }
 
-  // Überprüft nach 4 zeichen ob es der richtige code war
+  // Überprüft nach 4 Zeichen, ob es der richtige Code war
   if (index == 4) {
     if (setPin == 0) {
       if (
