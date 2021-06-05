@@ -1,11 +1,17 @@
-#include <Console.h>;
+/*
+  Michael Schädler
+  Kay Wild
+  Mattia Müggler
+  
+  Version: 23
+*/
 
+
+#include <Console.h>;
 #include <LiquidCrystal.h>
 
 int eingabeCode[4];
-
 int setCode[4];
-
 int adminCode[4] = {
   1,
   2,
