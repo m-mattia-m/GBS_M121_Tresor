@@ -29,6 +29,7 @@ int taster5;
 int tasterZuruecksetzen;
 int tasterSet;
 int anzPinFehler = 0;
+int setzePinStart = 0;
 
 int index = 0;
 int setzePin = 0;
@@ -76,6 +77,15 @@ void loop() {
   // Rotes LED leuchtet standardmässig und grünes LED ist ausgeschaltet
   digitalWrite(11, HIGH);
   digitalWrite(12, LOW);
+
+  // Wenn es neu gestartet wird, muss man als erstes einen Pin setzten
+  if (setzePinStart == 0){
+    setzePin = 1;
+    setzePinStart = 1;
+    lcd.setCursor(0, 0);
+    lcd.print("Setze neuer Pin:");
+    delay(200);
+  }
 
   // Prüft ob Türe geschlossen oder geöffnet ist, um das LED entsprechend leuchten zu lassen
   if(tuereStatus == 0) {
@@ -242,7 +252,7 @@ void loop() {
         lcd.print("Falscher Pin");
         delay(2000);
         lcd.clear();
-        lcd.print("Pin eingaben:");
+        lcd.print("Pin eingeben:");
         delay(200);
       }
     } else if (setzePin == 1) {
