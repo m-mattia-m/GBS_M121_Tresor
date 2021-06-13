@@ -94,18 +94,30 @@ void loop() {
   
   // Prüft die Anzahl der Falscheingaben
   if (anzPinFehler >= 3){
+
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("zum oeffnen ");
     lcd.setCursor(0,1);
     lcd.print("an das Personal");
-    delay(2000);
+    tone(A5, 1000);
+    digitalWrite(11, HIGH);
+    delay(300);
+    noTone(A5);
+    digitalWrite(11, LOW);
+    delay(300);
+    tone(A5, 1000);
+    digitalWrite(11, HIGH);
+    delay(300);
+    noTone(A5);
+    digitalWrite(11, LOW);
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("an das Personal");
     lcd.setCursor(0,1);
     lcd.print("wenden");
-    delay(2000);
+    delay(300);
+    
   }
 
   // setzt die Zahl 1 zum Pin
@@ -204,9 +216,9 @@ void loop() {
   // Setzt den Modus, um einen Pin zu erstellen
   if (tasterSet == LOW) {
     if (tuereStatus == 1) {
-      tone(A5, 1000);
-      delay(500);
-      noTone(A5);
+      //tone(A5, 1000);
+      //delay(500);
+      //noTone(A5);
       lcd.clear();
       lcd.print("Setze Pin:");
       setzePin = 1;
