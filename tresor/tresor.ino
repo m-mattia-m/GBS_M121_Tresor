@@ -12,12 +12,6 @@
 
 int eingabeCode[4];
 int setzeCode[4];
-int adminCode[4] = {
-  1,
-  2,
-  3,
-  4
-};
 
 int ledRot; // Pin 11
 int ledGruen; // Pin 12
@@ -28,12 +22,6 @@ int taster4;
 int taster5;
 int tasterZuruecksetzen;
 int tasterSet;
-int anzPinFehler = 0;
-int setzePinStart = 0;
-
-int index = 0;
-int setzePin = 0;
-int tuereStatus = 0;
 
 const int rs = 1,
   en = 6,
@@ -43,6 +31,12 @@ const int rs = 1,
   d7 = 10;
 // Hier werden die Ports für das lcd-Display gesetzt
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+int anzPinFehler = 0;     // auf dieser Variable wird die Anzahl Fehleingaben gezählt (max. 3 und wird bei richtiger Eingabe zurückgesetzt)
+int setzePinStart = 0;    // Variable die zum überprüfen benutzt wird, ob es die erst-Benutzung ist --> 0 == erstBenutzung | 1 == schonBenutzt
+int index = 0;            // auf dieser Variable wird gezählt welche Stelle der Pin akutell ist
+int setzePin = 0;         // Variable die zum überprüfen benutzt wird, ob aktuell ein neuer Pin gesetzt wird --> 0 == nein | 1 == ja
+int tuereStatus = 0;      // Variable die zum überprüfen benutzt wird, ob die Türe offen oder geschlossen ist --> 0 == geschlossen | 1 == geöffnet
 
 void setup() {
 
@@ -61,6 +55,10 @@ void setup() {
   lcd.begin(16, 2);
   lcd.print("Pin eingeben:");
 
+  // Rotes LED leuchtet standardmässig und grünes LED ist ausgeschaltet
+  digitalWrite(11, HIGH);
+  digitalWrite(12, LOW);
+
 }
 
 void loop() {
@@ -74,9 +72,7 @@ void loop() {
   tasterZuruecksetzen = digitalRead(0);
   tasterSet = digitalRead(13);
 
-  // Rotes LED leuchtet standardmässig und grünes LED ist ausgeschaltet
-  digitalWrite(11, HIGH);
-  digitalWrite(12, LOW);
+
 
   // Wenn es neu gestartet wird, muss man als erstes einen Pin setzten
   if (setzePinStart == 0){
@@ -98,6 +94,23 @@ void loop() {
   
   // Prüft die Anzahl der Falscheingaben
   if (anzPinFehler >= 3){
+    tone(A5, 1000);
+    delay(300);
+    noTone(A5);
+
+    digitalWrite(11, HIGH);
+    delay(100);
+    digitalWrite(11, LOW);
+    delay(100);
+    digitalWrite(11, HIGH);
+    delay(100);
+    digitalWrite(11, LOW);
+    delay(100);
+    digitalWrite(11, HIGH);
+    delay(100);
+    digitalWrite(11, LOW);
+    delay(100);
+    
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("zum oeffnen ");
@@ -179,6 +192,15 @@ void loop() {
   // löscht die Eingabe
   if (tasterZuruecksetzen == LOW) {
     delay(800);
+
+
+    if (setzePin == 0) {
+      eingabeCode[index] = 4;
+    } else {
+      setzeCode[index] = 4;
+    }
+
+    
     if (index > 0){ 
       index -= 1;
     }
@@ -219,22 +241,16 @@ void loop() {
   if (index == 4) {
     if (setzePin == 0) {
       if (
-        (
           eingabeCode[0] == setzeCode[0] &&
           eingabeCode[1] == setzeCode[1] &&
           eingabeCode[2] == setzeCode[2] &&
           eingabeCode[3] == setzeCode[3]
-        ) ||
-        (
-          eingabeCode[0] == adminCode[0] &&
-          eingabeCode[1] == adminCode[1] &&
-          eingabeCode[2] == adminCode[2] &&
-          eingabeCode[3] == adminCode[3]
-        )
       ) {
         index = 0;
+        setzePinStart = 1;
         tuereStatus = 1;
         anzPinFehler = 0;
+        setzePinStart = 1;
         digitalWrite(11, LOW);
         digitalWrite(12, HIGH);
         lcd.clear();
