@@ -94,23 +94,6 @@ void loop() {
   
   // Prüft die Anzahl der Falscheingaben
   if (anzPinFehler >= 3){
-    tone(A5, 1000);
-    delay(300);
-    noTone(A5);
-
-    digitalWrite(11, HIGH);
-    delay(100);
-    digitalWrite(11, LOW);
-    delay(100);
-    digitalWrite(11, HIGH);
-    delay(100);
-    digitalWrite(11, LOW);
-    delay(100);
-    digitalWrite(11, HIGH);
-    delay(100);
-    digitalWrite(11, LOW);
-    delay(100);
-    
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("zum oeffnen ");
