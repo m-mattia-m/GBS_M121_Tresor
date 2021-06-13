@@ -89,14 +89,21 @@ void loop() {
     digitalWrite(11, LOW);
     digitalWrite(12, HIGH);
   }
+<<<<<<< HEAD
 
   // Prüft die Anzahl der Falscheingaben
   if (anzPinFehler >= 3) {
+=======
+  
+  // Prüft die Anzahl der Falscheingaben
+  if (anzPinFehler >= 3){
+>>>>>>> parent of 587bf22 (add tone-led-loop -> finish Code)
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("zum oeffnen ");
     lcd.setCursor(0, 1);
     lcd.print("an das Personal");
+<<<<<<< HEAD
 
     tone(A5, 1000);
     digitalWrite(11, HIGH);
@@ -110,12 +117,19 @@ void loop() {
     noTone(A5);
     digitalWrite(11, LOW);
 
+=======
+    delay(2000);
+>>>>>>> parent of 587bf22 (add tone-led-loop -> finish Code)
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("an das Personal");
     lcd.setCursor(0, 1);
     lcd.print("wenden");
+<<<<<<< HEAD
     delay(300);
+=======
+    delay(2000);
+>>>>>>> parent of 587bf22 (add tone-led-loop -> finish Code)
   }
 
   // setzt die Zahl 1 zum Pin
@@ -212,9 +226,9 @@ void loop() {
   // Setzt den Modus, um einen Pin zu erstellen
   if (tasterSet == LOW) {
     if (tuereStatus == 1) {
-      //tone(A5, 1000);
-      //delay(500);
-      //noTone(A5);
+      tone(A5, 1000);
+      delay(500);
+      noTone(A5);
       lcd.clear();
       lcd.print("Setze Pin:");
       setzePin = 1;
